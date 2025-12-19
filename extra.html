@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extra • EJK-Lite</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --text-primary: #f0f0f0;
+      --text-secondary: rgba(240,240,240,0.65);
+      --nav-bg: rgba(255,255,255,0.04);
+      --nav-hover: rgba(255,255,255,0.12);
+      --card-bg: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.1);
+      --transition: all 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* particles */
+    #particles-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* navbar */
+    .navbar {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 16px;
+      padding: 12px 24px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      z-index: 1000;
+    }
+
+    .navbar a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 24px;
+      border-radius: 50px;
+      opacity: 0.85;
+      transition: var(--transition);
+    }
+
+    .navbar a:hover {
+      background: var(--nav-hover);
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    /* main layout */
+    .main {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 20px 60px;
+    }
+
+    .card {
+      max-width: 900px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      padding: 48px;
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .updates {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+
+    .updates h2 {
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .updates ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .updates li {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 32px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="particles-canvas"></canvas>
+
+  <nav class="navbar">
+    <a href="index.html">Home</a>
+    <a href="games/">Games</a>
+    <a href="proxy/">Proxy</a>
+    <a href="#">Extra</a>
+    <a href="ai/">AI</a>
+  </nav>
+
+  <main class="main">
+    <div class="card">
+      <h1>We moved.</h1>
+
+      <p>
+        We have moved from <strong>ejkstudio.codeberg.page</strong> to
+        <strong>648kk.codeberg.page</strong>.
+        Recently, our website was blocked by Securely, so we relocated to ensure
+        that students can continue accessing the site at school.
+      </p>
+
+      <p>
+        At the moment, EJK-Lite is hosted exclusively on Codeberg.
+        We are actively preparing to expand to additional platforms including
+        GitHub, GitLab, AWS, and other hosting providers.
+      </p>
+
+      <div class="updates">
+        <h2>Updates</h2>
+        <ul>
+          <li>• Domain migration completed</li>
+          <li>• Improved compatibility with school networks</li>
+          <li>• Infrastructure cleanup and optimization</li>
+          <li>• Additional mirrors coming soon</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function initParticles() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const particleCount = 50;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() { this.reset(); }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.size = Math.random() * 1.5 + 0.8;
+          this.opacity = Math.random() * 0.3 + 0.1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(240,240,240,${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    initParticles();
+  </script>
+
+</body>
+</html>

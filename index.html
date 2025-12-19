@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EJK-Lite</title>
+  <meta name="description" content="EJK-Lite: perfect for school. By EJK Studios." />
+  <meta name="keywords" content="EJK-Lite, EJK Studios" />
+  <meta name="google-site-verification" content="li-dov9LjdaeWo65C9HYPMPybaAxr8NPF_BPM_ERaZ8">
+  <link rel="icon" href="favicon.ico" type="image/x-icon" />
+  <link rel="apple-touch-icon" sizes="256x256" href="favicon.ico" />
+  <meta name="robots" content="index, follow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --text-primary: #f0f0f0;
+      --text-secondary: rgba(240, 240, 240, 0.6);
+      --nav-bg: rgba(255, 255, 255, 0.04);
+      --nav-hover: rgba(255, 255, 255, 0.12);
+      --accent: #ff3366;
+      --logo-size: 180px;
+      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      display: flex;
+      gap: 16px;
+      padding: 12px 24px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 50px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+    .navbar a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 10px 24px;
+      border-radius: 50px;
+      background: transparent;
+      transition: var(--transition);
+      opacity: 0.85;
+    }
+    .navbar a:hover {
+      background: var(--nav-hover);
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      text-align: center;
+      gap: 32px;
+      z-index: 1;
+    }
+    .logo {
+      width: var(--logo-size);
+      height: var(--logo-size);
+      object-fit: contain;
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.6));
+      transition: var(--transition);
+      animation: float 6s ease-in-out infinite;
+      border-radius: 24px;
+    }
+    .logo:hover {
+      transform: scale(1.05);
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .subtitle {
+      font-size: 1.8rem;
+      font-weight: 400;
+      opacity: 0.8;
+      margin-bottom: 12px;
+    }
+    .slogan {
+      font-size: 1.4rem;
+      font-weight: 300;
+      opacity: 0.7;
+    }
+    .banner-container {
+      padding: 80px 0 120px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    .banner-track {
+      display: flex;
+      width: max-content;
+      gap: 60px;
+      animation: scroll 50s linear infinite;
+      padding: 0 60px;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .banner-track a {
+      flex-shrink: 0;
+    }
+    .banner-track img {
+      height: 160px;
+      width: auto;
+      border-radius: 20px;
+      object-fit: cover;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      transition: var(--transition);
+      opacity: 0.9;
+    }
+    .banner-track img:hover {
+      transform: scale(1.1) translateY(-10px);
+      opacity: 1;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+    }
+    .clock {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      opacity: 0.35;
+      transition: opacity 0.3s;
+      user-select: none;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .clock:hover {
+      opacity: 0.6;
+    }
+    @media (max-width: 1024px) {
+      .logo { --logo-size: 150px; }
+      .banner-track img { height: 140px; }
+    }
+    @media (max-width: 768px) {
+      .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 12px 16px;
+        gap: 12px;
+      }
+      .navbar a {
+        padding: 8px 20px;
+        font-size: 0.95rem;
+      }
+      .subtitle { font-size: 1.6rem; }
+      .banner-track { gap: 40px; }
+      .banner-track img { height: 120px; }
+    }
+    @media (max-width: 480px) {
+      .subtitle { font-size: 1.4rem; }
+      .logo { --logo-size: 120px; }
+    }
+  </style>
+</head>
+<body onload="updateSlogan(); startClock(); initParticles()">
+
+  <canvas id="particles-canvas"></canvas>
+
+  <nav class="navbar">
+    <a href="#">Home</a>
+    <a href="games/">Games</a>
+    <a href="proxy/">Proxy</a>
+    <a href="extra.html">Extra</a>
+    <a href="ai/">AI</a>
+  </nav>
+  <div class="main-content">
+    <img src="favicon.ico" alt="EJK-Lite Logo" class="logo" />
+    <h2 class="subtitle">Just play games, brochacho 🥀</h2>
+    <h4 class="slogan" id="main-slogan"></h4>
+  </div>
+  <div class="banner-container">
+    <div class="banner-track">
+      <a href="games/cookieclicker/docs/index.html"><img src="imgs/cookieclicker.png" alt="Cookie Clicker"></a>
+      <a href="games/blazedrifter/index.html"><img src="imgs/blazedrifter.jpeg" alt="Blaze Drifter"></a>
+      <a href="games/jetpack/index.html"><img src="imgs/jetpack.png" alt="Jetpack Joyride"></a>
+      <a href="games/subway-surfers-tokyo/index.html"><img src="imgs/subwaysurfers.jpeg" alt="Subway Surfers"></a>
+      <a href="games/cuttherope/index.html"><img src="imgs/rope.png" alt="Cut The Rope"></a>
+      <a href="games/ovo/index.html"><img src="imgs/ovo.png" alt="OvO"></a>
+      <a href="games/ragdollarchers/index.html"><img src="imgs/ragdollarchers.png" alt="Ragdoll Archers"></a>
+      <a href="games/volleyrandom/index.html"><img src="imgs/volley.png" alt="Volley Random"></a>
+      <a href="games/battlesim/index.html"><img src="imgs/battlesim.webp" alt="Battle Simulator"></a>
+      <a href="games/minecraft/index.html"><img src="imgs/minecraft.jpeg" alt="Minecraft"></a>
+      <a href="games/cookieclicker/docs/index.html"><img src="imgs/cookieclicker.png" alt="Cookie Clicker"></a>
+      <a href="games/blazedrifter/index.html"><img src="imgs/blazedrifter.jpeg" alt="Blaze Drifter"></a>
+      <a href="games/jetpack/index.html"><img src="imgs/jetpack.png" alt="Jetpack Joyride"></a>
+      <a href="games/subway-surfers-tokyo/index.html"><img src="imgs/subwaysurfers.jpeg" alt="Subway Surfers"></a>
+      <a href="games/cuttherope/index.html"><img src="imgs/rope.png" alt="Cut The Rope"></a>
+      <a href="games/ovo/index.html"><img src="imgs/ovo.png" alt="OvO"></a>
+      <a href="games/ragdollarchers/index.html"><img src="imgs/ragdollarchers.png" alt="Ragdoll Archers"></a>
+      <a href="games/volleyrandom/index.html"><img src="imgs/volley.png" alt="Volley Random"></a>
+      <a href="games/battlesim/index.html"><img src="imgs/battlesim.webp" alt="Battle Simulator"></a>
+      <a href="games/minecraft/index.html"><img src="imgs/minecraft.jpeg" alt="Minecraft"></a>
+    </div>
+  </div>
+  <div class="clock" id="clock">00:00:00</div>
+  <script>
+    const slogans = [
+      "6 or 7?",
+      "lock it up twi",
+      "bitlife is lowk buns 🥀",
+      "gabe stfu",
+      "so we kicking me out the table",
+      "js play bowmasters lowk best game",
+      "your ixls twin",
+      "You can host your own website just like this",
+      "i bet your grade is a 67%🥀😭",
+      "the guy who made this website is in jail",
+      "i know your name btw",
+      "want me to add more games? DM me at discord username: 648k__",
+      "yo theres lots of games stop being in the main screen",
+      "play bowmasters, and um clash of vikings its like lowk tuff",
+      "Today Is Friday People",
+      "EJK-LITE and EJKstudio is dope",
+      "This website is a fork of EJKStudio",
+      "slide me money twi",
+      "what time is it?",
+      "ngl you kinda chop",
+      "yo i like history class",
+      "🥀😭🥀😭",
+      "idk what to put here🥀"
+    ];
+    function updateSlogan() {
+      const idx = Math.floor(Math.random() * slogans.length);
+      document.getElementById('main-slogan').textContent = slogans[idx];
+    }
+    function startClock() {
+      function update() {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+      }
+      update();
+      setInterval(update, 1000);
+    }
+
+    function initParticles() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      const particleCount = 50;
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() {
+          this.reset();
+        }
+        reset() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.size = Math.random() * 1.5 + 0.8;
+          this.opacity = Math.random() * 0.3 + 0.1;
+        }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+          ctx.fillStyle = `rgba(240, 240, 240, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
+
+      let animationId;
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        animationId = requestAnimationFrame(animate);
+      }
+      animate();
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          cancelAnimationFrame(animationId);
+        } else {
+          animate();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
